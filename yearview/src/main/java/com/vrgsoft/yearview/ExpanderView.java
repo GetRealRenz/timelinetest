@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,12 +21,13 @@ public class ExpanderView extends LinearLayout implements View.OnClickListener {
     private Context mContext;
     private ItemHolder mLastItem;
     private OnClickPlus onClickPlusListener;
-    private int prevMrg = 1896;
     private int relocationOffset;
     private int prevYear = 0;
     private List<View> viewList;
     private List<YearModel> mYearModels;
     private HashMap<YearModel, ItemHolder> mYearViews = new HashMap<>();
+    private int mMinYear;
+    private int mMaxYear;
 
     private int yeareMax = -1;
 
@@ -37,15 +40,25 @@ public class ExpanderView extends LinearLayout implements View.OnClickListener {
         return mYearModels;
     }
 
+    public void setMaxYear(int maxYear) {
+        mMaxYear = maxYear;
+    }
+
+    public void setMinYear(int minYear) {
+        mMinYear = minYear;
+    }
+
     public void setYearModel(List<YearModel> carModel) {
         this.mYearModels = carModel;
         for (int i = 0; i < carModel.size(); i++) {
             ItemHolder item = new ItemHolder(mContext, this);
             YearModel car = carModel.get(i);
             prevYear = car.start_date();
-            int width = ((car.end_date() > 2016 ? 2016 : car.end_date()) - car.start_date())
+            int width = ((car.end_date() > Calendar.getInstance().get(Calendar.YEAR)
+                    ? Calendar.getInstance().get(Calendar.YEAR)
+                    : car.end_date()) - car.start_date())
                     * Utils.getColumnWidth(mContext) + (Utils.getColumnWidth(mContext) - 50);
-            int margin = (car.start_date() - prevMrg) * Utils.getColumnWidth(mContext) + 37;
+            int margin = (car.start_date() - mMinYear) * Utils.getColumnWidth(mContext) + 37;
             LayoutParams params = new LayoutParams(width, 40);
             params.setMargins(margin, 15, 0, 0);
             item.view.setLayoutParams(params);
@@ -118,7 +131,7 @@ public class ExpanderView extends LinearLayout implements View.OnClickListener {
 
                     if (firstYear >= car.start_date()) {
 
-                        int padd = coordX - (car.start_date() - 1896) * Utils.getColumnWidth(mContext);
+                        int padd = coordX - (car.start_date() - mMinYear) * Utils.getColumnWidth(mContext);
                         if (padd + 60 > mYearViews.get(mYearModels.get(i)).view.getWidth()) {
 
                             mYearViews.get(mYearModels.get(i)).name.setPadding(padd - mYearViews.get(mYearModels.get(i)).name.getWidth(), 0, 0, 0);
@@ -143,6 +156,7 @@ public class ExpanderView extends LinearLayout implements View.OnClickListener {
             }
 
         }
+        Log.d("ExpanderView","Added");
     }
 
     public List<TextView> getItems() {
@@ -172,7 +186,7 @@ public class ExpanderView extends LinearLayout implements View.OnClickListener {
         coordX = scrollX;
     }
 
-    public  interface OnClickPlus {
+    public interface OnClickPlus {
         public void onClickPlus(String last);
     }
 

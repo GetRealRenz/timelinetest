@@ -8,7 +8,7 @@
               android:gravity="center_vertical"
               android:orientation="horizontal">
 
-    <com.daimler.legends.of.trucking.view.widget.FontTextView
+    <TextView
         android:id="@+id/tx_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -18,11 +18,11 @@
         android:ellipsize="end"
         android:paddingLeft="@dimen/normal_margin"
         android:textAllCaps="true"
-        android:textSize="  @dimen/timeline_text"
+        android:textSize="@dimen/timeline_text"
         android:textStyle="bold"
         />
 
-    <com.daimler.legends.of.trucking.view.widget.FontTextView
+    <TextView
         android:id="@+id/tx_year"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -20,6 +20,18 @@ public class ClickView extends LinearLayout implements View.OnClickListener {
     private ScrolPosition position;
     private OnRowClick onRowClick;
     private int checkedPosition = -1;
+    private int mYearsCount;
+    private int mMinYear;
+    private static final int ID_DEFAULT = 999;
+    private static final int LAYOUT_WIDTH = 900;
+
+    public void setYearsCount(int yearsCount) {
+        mYearsCount = yearsCount;
+    }
+
+    public void setMinYear(int minYear) {
+        mMinYear = minYear;
+    }
 
     public ClickView(Context context) {
         super(context);
@@ -59,22 +71,23 @@ public class ClickView extends LinearLayout implements View.OnClickListener {
 
     private void addItem() {
         setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        for (int i = 0; i < 121; i++) {
+        for (int i = 0; i < mYearsCount; i++) {
             final ItemHolder item = new ItemHolder(mContext, this);
             LayoutParams params = new LayoutParams(Utils.getColumnWidth(mContext), ViewGroup.LayoutParams.MATCH_PARENT);
             item.view.setLayoutParams(params);
             final int finalI = i;
-            item.popUp.setId(999 + i);
+            item.popUp.setId(ID_DEFAULT + i);
             item.view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (onRowClick != null) {
-                        onRowClick.onClick(1896 + finalI, item);
+                        onRowClick.onClick(mMinYear + finalI, item);
                     }
                 }
             });
             views.add(item);
             addView(item.view);
+            Log.d("ClickView","Added");
 
         }
 
@@ -125,7 +138,7 @@ public class ClickView extends LinearLayout implements View.OnClickListener {
             setNormal(checkedPosition);
         }
         this.checkedPosition = position;
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(900, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LAYOUT_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT);
         View view = views.get(checkedPosition).view;
         view.setLayoutParams(params);
 

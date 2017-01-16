@@ -22,6 +22,8 @@ public class YearView extends LinearLayout implements View.OnClickListener {
     private int checkedPosition = -1;
     private int mMaxYear;
     private int mMinYear;
+    private static final int LAYOUT_WIDTH = 900;
+    private List<YearModel> mYearModels;
 
     public YearView(Context context) {
         super(context);
@@ -48,6 +50,10 @@ public class YearView extends LinearLayout implements View.OnClickListener {
         }
     }
 
+    public void setYearModels(List<YearModel> yearModels) {
+        mYearModels = yearModels;
+    }
+
     private void init() {
         setOrientation(HORIZONTAL);
         addItem();
@@ -65,9 +71,20 @@ public class YearView extends LinearLayout implements View.OnClickListener {
             LayoutParams params = new LayoutParams(Utils.getColumnWidth(mContext), ViewGroup.LayoutParams.MATCH_PARENT);
             item.view.setLayoutParams(params);
             item.name.setText(mMinYear + i + "");
+            if (mYearModels.size() != 0 && mYearModels.get(0).image() != null) {
+                item.CardView1.setVisibility(VISIBLE);
+                if (mContext != null) {
+                    try {
+                        //  Glide.with(mContext).load(mYearModels.get(0).image()).diskCacheStrategy(DiskCacheStrategy.ALL).dontAnimate().into(item.container1);
+                    } catch (IllegalArgumentException e) {
+                        Log.e("YearView", "Error");
+                    }
+
+                }
+            }
             views.add(item.view);
             addView(item.view);
-
+            Log.d("YearView", "Added");
         }
 
     }
@@ -126,7 +143,7 @@ public class YearView extends LinearLayout implements View.OnClickListener {
             setNormal(checkedPosition);
         }
         this.checkedPosition = position;
-        LayoutParams params = new LayoutParams(900, ViewGroup.LayoutParams.MATCH_PARENT);
+        LayoutParams params = new LayoutParams(LAYOUT_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT);
         View view = views.get(checkedPosition);
         view.setLayoutParams(params);
 
@@ -139,19 +156,11 @@ public class YearView extends LinearLayout implements View.OnClickListener {
         checkedPosition = -1;
     }
 
-    public class Builder {
-        public Builder() {
-        }
-
-        public Builder setMinYear(int minYear) {
-            YearView.this.mMinYear = minYear;
-            return this;
-        }
-
-        public Builder setMaxYear(int maxYear) {
-            YearView.this.mMaxYear = maxYear;
-            return this;
-        }
+    public void setMaxYear(int maxYear) {
+        mMaxYear = maxYear;
     }
 
+    public void setMinYear(int minYear) {
+        mMinYear = minYear;
+    }
 }

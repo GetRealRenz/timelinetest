@@ -13,18 +13,18 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <com.daimler.legends.of.trucking.view.widget.YearView
+        <com.vrgsoft.yearview.YearView
             android:id="@+id/year"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
 
-        <com.daimler.legends.of.trucking.view.widget.ExpanderView
+        <com.vrgsoft.yearview.ExpanderView
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/expander_margin"/>
 
-        <com.daimler.legends.of.trucking.view.widget.ClickView
+        <com.vrgsoft.yearview.ClickView
             android:id="@+id/click"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
